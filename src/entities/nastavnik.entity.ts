@@ -78,7 +78,7 @@ export class Nastavnik {
 
   @ManyToOne(
     () => Predmet, (predmet) => predmet.nastavniks, { onDelete: "RESTRICT", onUpdate: "CASCADE", })
-  @JoinColumn([{ name: "predmet_id", referencedColumnName: "predmetid" }]
+  @JoinColumn([{ name: "predmet_id", referencedColumnName: "predmetId" }]
   )
   predmet: Predmet;
 }

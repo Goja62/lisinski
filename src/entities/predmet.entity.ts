@@ -6,10 +6,10 @@ import { Nastavnik } from "./nastavnik.entity";
 export class Predmet {
   @PrimaryGeneratedColumn({ 
     type: "int", 
-    name: "predmetid", 
+    name: "predmet_id", 
     unsigned: true 
   })
-  predmetid: number;
+  predmetId: number;
 
   @Column({
     type: "varchar",

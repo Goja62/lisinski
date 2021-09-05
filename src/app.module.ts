@@ -2,7 +2,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfiguration } from 'config/databaseConfiguration';
-import { AppController } from './app.controller';
+import { AdministratorController } from './controllers/api/administrator.controller';
+import { AppController } from './controllers/app.controller';
 import { Administrator } from './entities/administrator.entety';
 import { Nastavnik } from './entities/nastavnik.entity';
 import { Odsek } from './entities/odsek.entity';
@@ -34,6 +35,7 @@ import { AdministratorService } from './services/administrator/administrator.ser
   ],
   controllers: [
     AppController,
+    AdministratorController,
   ],
   providers: [
     AdministratorService,
