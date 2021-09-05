@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Administrator } from 'src/enteties/administrator.enteti';
+import { Administrator } from 'src/entities/administrator.entety';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Param } from '@nestjs/common';
-import { Administrator } from './enteties/administrator.enteti';
+import { Administrator } from './entities/administrator.entety';
 import { AdministratorService } from './services/administrator/administrator.service';
 
 @Controller()
