@@ -5,6 +5,7 @@ import { Body, Controller, Get, Param, Patch, Post } from "@nestjs/common";
 import { AddAdministratorDto } from "src/dtos/administrator/add.administrator.dto";
 import { EditAdministratorDto } from "src/dtos/administrator/edit.administrator.dto";
 import { Administrator } from "src/entities/administrator.entety";
+import { ApiResponse } from "src/misc/api.response";
 import { AdministratorService } from "src/services/administrator/administrator.service";
 
 @Controller('api/administrator')
@@ -19,21 +20,19 @@ export class AdministratorController {
   
   //http://localhost:3000/api/administrator/:id
   @Get('/:id') 
-  getById(@Param('id') administratorId: number): Promise<Administrator> {
+  getById(@Param('id') administratorId: number): Promise<Administrator | ApiResponse> {
     return this.AdministratorService.getById(administratorId)
   }
 
   //http://localhost:3000/api/administrator
   @Post()
-  add(@Body() data: AddAdministratorDto): Promise<Administrator> {
+  add(@Body() data: AddAdministratorDto): Promise<Administrator | ApiResponse> {
       return this.AdministratorService.add(data)
   }
 
   //http://localhost:3000/api/administrator/:id
   @Patch(':id')
-  edit(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator> {
+  edit(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator | ApiResponse> {
       return this.AdministratorService.editById(id, data)
   }
-
-
 }

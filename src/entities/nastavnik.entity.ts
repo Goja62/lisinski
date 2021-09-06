@@ -10,7 +10,7 @@ import {
 import { Odsek } from "./odsek.entity";
 import { Predmet } from "./predmet.entity";
 
-@Index("uq_nastavnik_e-mail", ["eMail"], { unique: true })
+@Index("uq_nastavnik_e-mail", ["email"], { unique: true })
 @Index("uq_nastavnik_telefon", ["telefon"], { unique: true })
 @Index("fk_nastavnik_predmet_id", ["predmetId"], {})
 @Index("fk_nastavnik_odsek_id", ["odsekId"], {})
@@ -22,6 +22,20 @@ export class Nastavnik {
     unsigned: true 
   })
   nastavnikId: number;
+
+  @Column({
+    type: "varchar",
+    unique: true,
+    length: 50,
+  })
+  email: string;
+
+  @Column({
+    type: 'varchar',
+    name: 'password_hash',
+    length: 128
+  })
+  passwordHash: string
 
   @Column({ 
     type: "varchar",
@@ -47,14 +61,6 @@ export class Nastavnik {
     unsigned: true,
   })
   odsekId: number;
-
-  @Column({
-    type: "varchar",
-    name: "e-mail",
-    unique: true,
-    length: 50,
-  })
-  eMail: string;
 
   @Column({
     type: "varchar",

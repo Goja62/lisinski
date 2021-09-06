@@ -5,6 +5,4 @@ import { AdministratorService } from '../services/administrator/administrator.se
 @Controller()
 export class AppController {
   constructor(private administratorService: AdministratorService) {}
-
-
 }
