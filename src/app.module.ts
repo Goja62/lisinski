@@ -3,12 +3,16 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfiguration } from 'config/databaseConfiguration';
 import { AdministratorController } from './controllers/api/administrator.controller';
+import { NastavnikController } from './controllers/api/nastavnik.controller';
+import { PredmetController } from './controllers/api/predmet.controller';
 import { AppController } from './controllers/app.controller';
 import { Administrator } from './entities/administrator.entety';
 import { Nastavnik } from './entities/nastavnik.entity';
 import { Odsek } from './entities/odsek.entity';
 import { Predmet } from './entities/predmet.entity';
 import { AdministratorService } from './services/administrator/administrator.service';
+import { NastavnikService } from './services/nastavnik/nastavnik.service';
+import { PredmetService } from './services/predmet/predmet.service';
 
 @Module({
   imports: [
@@ -36,9 +40,13 @@ import { AdministratorService } from './services/administrator/administrator.ser
   controllers: [
     AppController,
     AdministratorController,
+    PredmetController,
+    NastavnikController,
   ],
   providers: [
     AdministratorService,
+    PredmetService,
+    NastavnikService,
   ],
 })
 export class AppModule {}

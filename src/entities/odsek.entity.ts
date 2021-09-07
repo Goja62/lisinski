@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Nastavnik } from "./nastavnik.entity";
 
 @Entity("odsek")
@@ -18,8 +18,10 @@ export class Odsek {
   })
   nazivOdseka: string;
 
-  @OneToMany(
-    () => Nastavnik, (nastavnik) => nastavnik.odsek
-  )
-  nastavniks: Nastavnik[];
+  @ManyToOne(() => Nastavnik, (nastavnik) => nastavnik.odseks, {
+    onDelete: "RESTRICT",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn([{ name: "nastavnik_id", referencedColumnName: "nastavnikId" }])
+  nastavnik: Nastavnik;
 }

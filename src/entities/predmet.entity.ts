@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Nastavnik } from "./nastavnik.entity";
 
 @Entity("predmet")
 export class Predmet {
+  [x: string]: any;
   @PrimaryGeneratedColumn({ 
     type: "int", 
     name: "predmet_id", 
@@ -23,8 +24,9 @@ export class Predmet {
   })
   napomenaPredmet: string;
 
-  @OneToMany(
-    () => Nastavnik, (nastavnik) => nastavnik.predmet
+  @ManyToOne(
+    () => Nastavnik, (nastavnik) => nastavnik.predmets, { onDelete: "RESTRICT", onUpdate: "CASCADE", })
+  @JoinColumn([{ name: "nastavnik_id", referencedColumnName: "nastavnikId" }]
   )
-  nastavniks: Nastavnik[];
+  nastavnik: Nastavnik;
 }

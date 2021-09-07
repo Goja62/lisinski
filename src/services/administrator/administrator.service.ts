@@ -27,8 +27,6 @@ export class AdministratorService {
 
             resolve(admin);
         })
-        
-
     }
 
     add(data: AddAdministratorDto): Promise<Administrator | ApiResponse> {
