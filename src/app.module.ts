@@ -5,14 +5,18 @@ import { DatabaseConfiguration } from 'config/databaseConfiguration';
 import { AdministratorController } from './controllers/api/administrator.controller';
 import { NastavnikController } from './controllers/api/nastavnik.controller';
 import { PredmetController } from './controllers/api/predmet.controller';
+import { UcenikController } from './controllers/api/ucenik.controller';
 import { AppController } from './controllers/app.controller';
 import { Administrator } from './entities/administrator.entety';
 import { Nastavnik } from './entities/nastavnik.entity';
+import { NivoSkolovanja } from './entities/nivo-skolovanja.entety';
 import { Odsek } from './entities/odsek.entity';
 import { Predmet } from './entities/predmet.entity';
+import { Ucenik } from './entities/ucenik.entety';
 import { AdministratorService } from './services/administrator/administrator.service';
 import { NastavnikService } from './services/nastavnik/nastavnik.service';
 import { PredmetService } from './services/predmet/predmet.service';
+import { UcenikService } from './services/ucenik/ucenik.service';
 
 @Module({
   imports: [
@@ -28,6 +32,8 @@ import { PredmetService } from './services/predmet/predmet.service';
         Nastavnik,
         Odsek,
         Predmet,
+        Ucenik,
+        NivoSkolovanja,
       ]
     }),
     TypeOrmModule.forFeature([
@@ -35,6 +41,8 @@ import { PredmetService } from './services/predmet/predmet.service';
       Nastavnik,
       Odsek,
       Predmet,
+      Ucenik,
+      NivoSkolovanja,
     ])
   ],
   controllers: [
@@ -42,11 +50,13 @@ import { PredmetService } from './services/predmet/predmet.service';
     AdministratorController,
     PredmetController,
     NastavnikController,
+    UcenikController,
   ],
   providers: [
     AdministratorService,
     PredmetService,
     NastavnikService,
+    UcenikService,
   ],
 })
 export class AppModule {}

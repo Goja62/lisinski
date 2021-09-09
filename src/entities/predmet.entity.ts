@@ -25,7 +25,7 @@ export class Predmet {
   napomenaPredmet: string;
 
   @ManyToOne(
-    () => Nastavnik, (nastavnik) => nastavnik.predmets, { onDelete: "RESTRICT", onUpdate: "CASCADE", })
+    () => Nastavnik, (nastavnik) => nastavnik.predmeti, { onDelete: "RESTRICT", onUpdate: "CASCADE", })
   @JoinColumn([{ name: "nastavnik_id", referencedColumnName: "nastavnikId" }]
   )
   nastavnik: Nastavnik;

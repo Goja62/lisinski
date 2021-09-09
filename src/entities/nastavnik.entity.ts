@@ -54,13 +54,20 @@ export class Nastavnik {
   })
   telefon: string;
 
+  @Column({ 
+    type: "text",
+    name: "napomena_nastavnik", 
+    nullable: true 
+  })
+  napomenaNastavnik: string | null;
+
   @OneToMany(
     () => Odsek, (odsek) => odsek.nastavnik
   )
-  odseks: Odsek[];
+  odseci: Odsek[];
 
   @OneToMany(
     () => Predmet, (predmet) => predmet.nastavnik
   )
-  predmets: Predmet[];
+  predmeti: Predmet[];
 }

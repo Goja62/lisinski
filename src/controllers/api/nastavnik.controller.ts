@@ -18,10 +18,10 @@ import { NastavnikService } from "src/services/nastavnik/nastavnik.service";
     },
     query: {
         join: {
-            predmets: {
+            predmeti: {
                 eager: true,
             },
-            odseks: {
+            odseci: {
                 eager: true,
             }
         }

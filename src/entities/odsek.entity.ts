@@ -18,7 +18,7 @@ export class Odsek {
   })
   nazivOdseka: string;
 
-  @ManyToOne(() => Nastavnik, (nastavnik) => nastavnik.odseks, {
+  @ManyToOne(() => Nastavnik, (nastavnik) => nastavnik.odseci, {
     onDelete: "RESTRICT",
     onUpdate: "CASCADE",
   })
