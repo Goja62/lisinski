@@ -68,6 +68,6 @@ export class Nastavnik {
 
   @OneToMany(
     () => Predmet, (predmet) => predmet.nastavnik
-  )
+    )
   predmeti: Predmet[];
 }

@@ -1,32 +1,36 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Nastavnik } from "./nastavnik.entity";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Nastavnik } from "./nastavnik.entety";
 
-@Entity("predmet")
+@Index("fk_predmet_nastavnik_id", ["nastavnikId"], {})
+
+@Entity("predmet", { schema: "onolisinski" })
 export class Predmet {
-  [x: string]: any;
-  @PrimaryGeneratedColumn({ 
-    type: "int", 
-    name: "predmet_id", 
-    unsigned: true 
-  })
+  @PrimaryGeneratedColumn({ type: "int", name: "predmet_id", unsigned: true })
   predmetId: number;
 
-  @Column({
-    type: "varchar",
-    length: 128,
-  })
+  @Column("varchar", { name: "naziv", length: 128, default: () => "'0'" })
   naziv: string;
 
-  @Column({ 
-    type: "text",
-    name: "napomena_predmet"
-  })
+  @Column("int", { name: "nastavnik_id", unsigned: true, default: () => "'0'" })
+  nastavnikId: number;
+
+  @Column("text", { name: "napomena_predmet" })
   napomenaPredmet: string;
 
+  @Column("int", { name: "ucenik_id", unsigned: true, default: () => "'0'" })
+  ucenikId: number;
+
+  
   @ManyToOne(
-    () => Nastavnik, (nastavnik) => nastavnik.predmeti, { onDelete: "RESTRICT", onUpdate: "CASCADE", })
-  @JoinColumn([{ name: "nastavnik_id", referencedColumnName: "nastavnikId" }]
-  )
+    () => Nastavnik, (nastavnik) => nastavnik.predmeti, { onDelete: "RESTRICT",  onUpdate: "CASCADE", })
+  @JoinColumn([{ name: "nastavnik_id", referencedColumnName: "nastavnikId" }])
   nastavnik: Nastavnik;
 }

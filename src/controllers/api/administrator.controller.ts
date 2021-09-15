@@ -10,29 +10,29 @@ import { AdministratorService } from "src/services/administrator/administrator.s
 
 @Controller('api/administrator')
 export class AdministratorController {
-    constructor(private AdministratorService: AdministratorService) {}
+    constructor(private administratorService: AdministratorService) {}
 
   //http://localhost:3000/api/administrator
   @Get() 
   getAllAdministrators(): Promise<Administrator[]> {
-    return this.AdministratorService.getAll()
+    return this.administratorService.getAll()
   }
   
   //http://localhost:3000/api/administrator/:id
   @Get('/:id') 
   getById(@Param('id') administratorId: number): Promise<Administrator | ApiResponse> {
-    return this.AdministratorService.getById(administratorId)
+    return this.administratorService.getById(administratorId)
   }
 
   //http://localhost:3000/api/administrator
   @Post()
   add(@Body() data: AddAdministratorDto): Promise<Administrator | ApiResponse> {
-      return this.AdministratorService.add(data)
+      return this.administratorService.add(data)
   }
 
   //http://localhost:3000/api/administrator/:id
   @Patch(':id')
   edit(@Param('id') id: number, @Body() data: EditAdministratorDto): Promise<Administrator | ApiResponse> {
-      return this.AdministratorService.editById(id, data)
+      return this.administratorService.editById(id, data)
   }
 }

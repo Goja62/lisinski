@@ -4,6 +4,7 @@ import { Crud } from "@nestjsx/crud";
 import { Predmet } from "src/entities/predmet.entity";
 import { PredmetService } from "src/services/predmet/predmet.service";
 
+//http://localhost:3000/api/predmet
 @Controller('api/predmet')
 @Crud({
     model: {
@@ -14,6 +15,13 @@ import { PredmetService } from "src/services/predmet/predmet.service";
             field: 'predmetId',
             type: 'number',
             primary: true
+        }
+    },
+    query: {
+        join: {
+            nastavnik: {
+                eager: true
+            }
         }
     }
 })

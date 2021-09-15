@@ -1,25 +1,19 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Ucenik } from "./ucenik.entety";
 
-@Entity("nivo_skolovanja")
+@Entity("nivo_skolovanja", { schema: "onolisinski" })
 export class NivoSkolovanja {
-  @PrimaryGeneratedColumn({ 
+  @PrimaryGeneratedColumn({
     type: "int",
     name: "nivo_skolovanja_id",
-    unsigned: true 
+    unsigned: true,
   })
   nivoSkolovanjaId: number;
 
-  @Column({ 
-    type: "varchar",
-    length: 50,
-  })
+  @Column("varchar", { name: "naziv", length: 3, default: () => "'0'" })
   naziv: string;
 
-  @ManyToOne(
-      () => Ucenik, (ucenik) => ucenik.nivoiSkolovanja, { onDelete: "RESTRICT", onUpdate: "CASCADE", })
-  @JoinColumn([{ name: "nivo_skolovanja_id", referencedColumnName: "nivoSkolovanjaId" }]
-  )
-  ucenik: Ucenik;
+  @OneToMany(() => Ucenik, (ucenik) => ucenik.nivoSkolovanja)
+  ucenici: Ucenik[];
 }
