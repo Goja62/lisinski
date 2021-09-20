@@ -14,5 +14,9 @@ export class SlikaService extends TypeOrmCrudService<Slika> {
     dodavanjeSlike(novaSlika: Slika): Promise<Slika> {
         return this.slika.save(novaSlika);
     }
+
+    brisanjeSlike(id: number) {
+        return this.slika.delete(id);
+    }
 }
 

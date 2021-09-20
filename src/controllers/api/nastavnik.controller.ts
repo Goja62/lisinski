@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Param, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Crud } from "@nestjsx/crud";
 import { AddNastavnikDto } from "src/dtos/nastavnik/add.nastavnik.dto";
@@ -152,5 +152,28 @@ export class NastavnikController {
         return sacuvanaSlika;
     }
 
-   
+    // http://localhost:3000/api/nastavnik/:nastavnikId/brisanjeSlike/:slikaId/
+   @Delete(':nastavnikId/brisanjeSlike/:slikaId')
+   public async brisanjeSlike(@Param('nastavnikId') nastavnikId: number, @Param('slikaId') slikaId: number): Promise<Slika | ApiResponse> {
+        const slika = await this.slikaService.findOne({
+            nastavnikId: nastavnikId,
+            slikaId: slikaId,
+        })
+
+        if (!slika) {
+            return new ApiResponse('error', -5001, 'Fotografija nije pronađena')
+        }
+
+        fs.unlinkSync(SkladisteConfig.slika.destinacija + slika.putanja)
+        fs.unlinkSync(SkladisteConfig.slika.destinacija +  SkladisteConfig.slika.promenaVelicine.mala.direktorijum + slika.putanja)
+        fs.unlinkSync(SkladisteConfig.slika.destinacija +  SkladisteConfig.slika.promenaVelicine.thumb.direktorijum + slika.putanja)
+
+        const rezultetBrisanja = await this.slikaService.brisanjeSlike(slika.slikaId)
+
+        if (rezultetBrisanja.affected === 0) {
+            return new ApiResponse('error', -5002, 'Nijedna slika nije obrisana')
+        }
+
+        return new ApiResponse('ok', -5003, 'Obrisana je 1 slika')
+   } 
 }
