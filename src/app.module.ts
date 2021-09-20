@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfiguration } from 'config/databaseConfiguration';
 import { AdministratorController } from './controllers/api/administrator.controller';
+import { AuthController } from './controllers/api/auth.controller';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 import { NastavnikController } from './controllers/api/nastavnik.controller';
 import { OdsekController } from './controllers/api/odsek.controller';
 import { PredmetController } from './controllers/api/predmet.controller';
@@ -19,6 +22,8 @@ import { NastavnikService } from './services/nastavnik/nastavnik.service';
 import { OdsekService } from './services/odsek/odsek.service';
 import { PredmetService } from './services/predmet/predmet.service';
 import { UcenikService } from './services/ucenik/ucenik.service';
+import { Slika } from './entities/slika.entety';
+import { SlikaService } from './services/slika/slika.service';
 
 @Module({
   imports: [
@@ -36,6 +41,7 @@ import { UcenikService } from './services/ucenik/ucenik.service';
         Predmet,
         NivoSkolovanja,
         Ucenik,
+        Slika
       ]
     }),
     TypeOrmModule.forFeature([
@@ -44,7 +50,8 @@ import { UcenikService } from './services/ucenik/ucenik.service';
       Odsek,
       Predmet,
       NivoSkolovanja,
-      Ucenik
+      Ucenik,
+      Slika,
     ])
   ],
   controllers: [
@@ -54,6 +61,7 @@ import { UcenikService } from './services/ucenik/ucenik.service';
     NastavnikController,
     UcenikController,
     OdsekController,
+    AuthController,
   ],
   providers: [
     AdministratorService,
@@ -61,6 +69,18 @@ import { UcenikService } from './services/ucenik/ucenik.service';
     PredmetService,
     UcenikService,
     OdsekService,
+    SlikaService,
   ],
+  exports: [
+    AdministratorService,
+  ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude('auth/*')
+      .forRoutes('api/*')
+  }
+  
+}

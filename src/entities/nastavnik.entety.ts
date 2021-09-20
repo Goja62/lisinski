@@ -4,10 +4,12 @@ import {
   Entity,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Odsek } from "./odsek.entity";
 import { Predmet } from "./predmet.entity";
+import { Slika } from "./slika.entety";
 
 @Index("uq_nastavnik_e-mail", ["email"], { unique: true })
 @Index("uq_nastavnik_telefon", ["telefon"], { unique: true })
@@ -70,4 +72,9 @@ export class Nastavnik {
     () => Predmet, (predmet) => predmet.nastavnik
     )
   predmeti: Predmet[];
+
+  @OneToOne(
+    () => Slika, (slika) => slika.nastavnik
+    )
+  slike: Slika[];
 }

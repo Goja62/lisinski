@@ -9,6 +9,7 @@ import * as crypto from 'crypto'
 import { AddAdministratorDto } from 'src/dtos/administrator/add.administrator.dto';
 import { EditAdministratorDto } from 'src/dtos/administrator/edit.administrator.dto';
 import { ApiResponse } from 'src/misc/api.response';
+
 @Injectable()
 export class AdministratorService {
     constructor(@InjectRepository(Administrator) private readonly administrator: Repository<Administrator>) {}
@@ -18,7 +19,6 @@ export class AdministratorService {
     }
 
     async getById(administartorId: number): Promise<Administrator | ApiResponse> {
-        
             return new Promise(async (resolve) => {
                 let admin = await this.administrator.findOne(administartorId)
                 if (admin === undefined || !admin) {
@@ -27,6 +27,18 @@ export class AdministratorService {
 
             resolve(admin);
         })
+    }
+
+    async getByUsername(username: string): Promise<Administrator | null> {
+        const administrator = await this.administrator.findOne({
+            username: username
+        })
+
+        if (administrator) {
+            return administrator
+        }
+
+        return administrator
     }
 
     add(data: AddAdministratorDto): Promise<Administrator | ApiResponse> {
