@@ -8,8 +8,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Nastavnik } from "./nastavnik.entety";
+import { Ucenik } from "./ucenik.entety";
 
 @Index("fk_predmet_nastavnik_id", ["nastavnikId"], {})
+@Index("fk_predmet_ucenik_id", ["ucenikId"], {})
 
 @Entity("predmet", { schema: "onolisinski" })
 export class Predmet {
@@ -33,4 +35,11 @@ export class Predmet {
     () => Nastavnik, (nastavnik) => nastavnik.predmeti, { onDelete: "RESTRICT",  onUpdate: "CASCADE", })
   @JoinColumn([{ name: "nastavnik_id", referencedColumnName: "nastavnikId" }])
   nastavnik: Nastavnik;
+
+
+@ManyToOne(
+  () => Ucenik, (ucenik) => ucenik.predmeti, { onDelete: "RESTRICT",  onUpdate: "CASCADE", })
+@JoinColumn([{ name: "ucenik_id", referencedColumnName: "ucenikId" }])
+ucenik: Ucenik;
 }
+

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-export class AddNastavnikDto {
+export class EditNastavnikDto {
     email: string;
     password: string;
     prezime: string;
@@ -13,5 +13,5 @@ export class AddNastavnikDto {
         nazivPredmeta: string;
         napomenaPredmet: string;
         ucenikId: number;
-    }[]
+    }[] | null
 }

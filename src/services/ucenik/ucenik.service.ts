@@ -7,6 +7,7 @@ import { NivoSkolovanja } from "src/entities/nivo-skolovanja.entety";
 import { Ucenik } from "src/entities/ucenik.entety";
 import { ApiResponse } from "src/misc/api.response";
 import { Repository } from "typeorm";
+import * as crypto from 'crypto' 
 
 @Injectable()
 
@@ -24,17 +25,31 @@ export class UcenikService extends TypeOrmCrudService<Ucenik>{
 
     } 
 
+    async getById(ucenikId: number): Promise<Ucenik | ApiResponse> {
+        return new Promise(async (resolve) => {
+            const ucenik = await this.ucenik.findOne(ucenikId)
+            if (ucenik === undefined || !ucenik) {
+            resolve(new ApiResponse('Greška!', -6002, 'Nije pronađen učenik'))
+        }
+
+        resolve(ucenik);
+    })
+}
+
     async kreiranjeNovogUcenika(data: AddUcenikDto): Promise<Ucenik | ApiResponse> {
+        const passwordHash = crypto.createHash('sha512'); 
+        passwordHash.update(data.password);
+        const passwordHashString = passwordHash.digest('hex').toUpperCase();
+
         const noviUcenik = new Ucenik()
+        noviUcenik.email = data.email;
+        noviUcenik.passwordHash = passwordHashString;
         noviUcenik.prezime = data.prezimeUcenika;
         noviUcenik.ime = data.imeUcenika;
-        noviUcenik.nivoSkolovanjaId = data.nivoSkolovanja;
+        noviUcenik.nivoSkolovanjaId = data.nivoSkolovanjaId;
 
         await this.ucenik.save(noviUcenik)
-
-        const nivoSkolovanja = new NivoSkolovanja();
-        nivoSkolovanja.naziv = data.nazivNivoa
-
+        
         const rezultat =  this.ucenik.findOne(noviUcenik.ucenikId, {
             relations: [
                 'nivoSkolovanja'
@@ -42,5 +57,9 @@ export class UcenikService extends TypeOrmCrudService<Ucenik>{
         })
         console.log(rezultat)
         return rezultat;
+    }
+
+    brisanjeUcenika(id: number) {
+        return this.ucenik.delete(id)
     }
 }

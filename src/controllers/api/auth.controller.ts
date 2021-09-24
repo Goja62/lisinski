@@ -10,12 +10,16 @@ import * as jwt from "jsonwebtoken"
 import { JwtDataAdministratorDto } from "src/dtos/administrator/jwt.data.administrator.dto";
 import { Request } from "express";
 import { JwtSecret } from "config/jwt.secret";
+import { NastavnikService } from "src/services/nastavnik/nastavnik.service";
 
 @Controller('auth')
 export class AuthController {
-    constructor(public administratorService: AdministratorService) { }
+    constructor(
+        public administratorService: AdministratorService,
+        public nastavnikService: NastavnikService,
+    ) { }
 
-    //http://localhost:3000/uth/login
+    //http://localhost:3000/auth/login
     @Post('login')
     async doLogin(@Body() data: LoginAdministratorDto, @Req() req: Request): Promise<LoginInfoAdministratorDto | ApiResponse> {
         const administrator: Administrator = await this.administratorService.getByUsername(data.username);

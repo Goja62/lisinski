@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
 export class AddUcenikDto {
+    email: string;
+    password: string;
     prezimeUcenika: string;
     imeUcenika: string;
-    nivoSkolovanja: 0 | 1 | null;
-    nazivNivoa: 'OMŠ' | 'SMŠ' | null
+    nivoSkolovanjaId: 1 | 2 | null
 }

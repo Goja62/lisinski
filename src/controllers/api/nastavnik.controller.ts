@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Param, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Crud } from "@nestjsx/crud";
 import { AddNastavnikDto } from "src/dtos/nastavnik/add.nastavnik.dto";
@@ -17,6 +17,7 @@ import * as fileType from "file-type";
 import * as fs from "fs";
 import { Funkcije } from "src/misc/funkcije";
 import * as sharp from "sharp";
+import { EditNastavnikDto } from "src/dtos/nastavnik/edit.nastavnik.dto";
 
 //http://localhost:3000/api/nastavnik
 @Controller('api/nastavnik')
@@ -54,8 +55,13 @@ export class NastavnikController {
     //http://localhost:3000/api/nastavnik/napraviNastavnika
     @Post('napraviNastavnika')
     async PravljenjeKompletnogNastavnika(@Body() data: AddNastavnikDto): Promise<Nastavnik | ApiResponse> {
-        
         return await this.service.PravljenjeKompletnogNastavnika(data)
+    }
+
+    @Patch(':nastavnikId')
+    async editovanjeKompletnogNastavnika(@Param('nastavnikId') id: number, @Body() data: EditNastavnikDto): Promise<Nastavnik | ApiResponse> {
+        
+        return await this.service.editovanjeKompletnogNastavnika(id, data)
     }
 
      // http://localhost:3000/api/nastavnik/:id/uploadSlike/
@@ -174,6 +180,6 @@ export class NastavnikController {
             return new ApiResponse('error', -5002, 'Nijedna slika nije obrisana')
         }
 
-        return new ApiResponse('ok', -5003, 'Obrisana je 1 slika')
+        return new ApiResponse('ok', 0, 'Obrisana je 1 slika')
    } 
 }
