@@ -73,6 +73,7 @@ import { SlikaService } from './services/slika/slika.service';
   ],
   exports: [
     AdministratorService,
+    NastavnikService,
   ]
 })
 export class AppModule implements NestModule {

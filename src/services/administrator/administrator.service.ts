@@ -38,7 +38,7 @@ export class AdministratorService {
             return administrator
         }
 
-        return administrator
+        return null
     }
 
     add(data: AddAdministratorDto): Promise<Administrator | ApiResponse> {

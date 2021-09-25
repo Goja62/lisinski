@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Param, Patch, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Crud } from "@nestjsx/crud";
 import { AddNastavnikDto } from "src/dtos/nastavnik/add.nastavnik.dto";
@@ -62,6 +62,12 @@ export class NastavnikController {
     async editovanjeKompletnogNastavnika(@Param('nastavnikId') id: number, @Body() data: EditNastavnikDto): Promise<Nastavnik | ApiResponse> {
         
         return await this.service.editovanjeKompletnogNastavnika(id, data)
+    }
+
+    //http://localhost:3000/api/nastavnik/:id
+    @Get('/:id')
+    async getNastavnikById(@Param('id') nastavnikId: number): Promise<Nastavnik | ApiResponse> {
+        return await this.service.getById(nastavnikId);
     }
 
      // http://localhost:3000/api/nastavnik/:id/uploadSlike/

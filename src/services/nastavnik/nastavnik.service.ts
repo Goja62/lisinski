@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Injectable } from "@nestjs/common";
@@ -22,6 +23,22 @@ export class NastavnikService extends TypeOrmCrudService<Nastavnik> {
     ) {
         super(nastavnik)
     } 
+
+    async getById(nastavnikId: number) {
+        return await this.nastavnik.findOne(nastavnikId)
+}
+
+async getByEmail(email: string): Promise<Nastavnik | null> {
+    const nastavnik = await this.nastavnik.findOne({
+        email: email
+    })
+
+    if (nastavnik) {
+        return nastavnik
+    }
+
+    return null
+}
 
     async PravljenjeKompletnogNastavnika(data: AddNastavnikDto): Promise<Nastavnik | ApiResponse> {
         const passwordHash = crypto.createHash('sha512'); 
