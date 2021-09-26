@@ -36,6 +36,18 @@ export class UcenikService extends TypeOrmCrudService<Ucenik>{
     })
 }
 
+async getByEmail(email: string): Promise<Ucenik | null> {
+    const nastavnik = await this.ucenik.findOne({
+        email: email
+    })
+
+    if (nastavnik) {
+        return nastavnik
+    }
+
+    return null
+}
+
     async kreiranjeNovogUcenika(data: AddUcenikDto): Promise<Ucenik | ApiResponse> {
         const passwordHash = crypto.createHash('sha512'); 
         passwordHash.update(data.password);

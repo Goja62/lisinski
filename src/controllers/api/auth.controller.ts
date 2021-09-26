@@ -13,12 +13,16 @@ import { NastavnikService } from "src/services/nastavnik/nastavnik.service";
 import { LoginNastavnikDto } from "src/dtos/administrator/login.nastavnik.dto";
 import { Nastavnik } from "src/entities/nastavnik.entety";
 import { LoginInfoDto } from "src/dtos/auth/login.info.dto";
+import { UcenikService } from "src/services/ucenik/ucenik.service";
+import { LoginUcenikDto } from "src/dtos/administrator/login.ucenik.dto";
+import { Ucenik } from "src/entities/ucenik.entety";
 
 @Controller('auth')
 export class AuthController {
     constructor(
         public administratorService: AdministratorService,
         public nastavnikService: NastavnikService,
+        public ucenikService: UcenikService
     ) { }
 
     //http://localhost:3000/auth/administrator/login
@@ -87,7 +91,7 @@ export class AuthController {
         }
 
         const jwtData = new JwtDataDto()
-        jwtData.role = "administrator"
+        jwtData.role = "nastavnik"
         jwtData.id = nastavnik.nastavnikId;
         jwtData.identitet = nastavnik.email
 
@@ -103,6 +107,50 @@ export class AuthController {
         const responseObject = new LoginInfoDto(
             nastavnik.nastavnikId,
             nastavnik.passwordHash,
+            token,
+        )
+
+        return new Promise(resolve => resolve(responseObject))
+    }
+
+    //http://localhost:3000/auth/ucenik/login
+    @Post('ucenik/login')
+    async doUcenikLogin(@Body() data: LoginUcenikDto, @Req() req: Request): Promise<LoginInfoDto | ApiResponse> {
+        const ucenik: Ucenik = await this.ucenikService.getByEmail(data.email);
+
+        if(!ucenik) {
+            return new Promise(resolve => {
+                resolve(new ApiResponse('Greška!', -3001, 'Nije pronađen nastavnik'))
+            }) 
+        }
+
+        const passwordHash = crypto.createHash('sha512'); 
+        passwordHash.update(data.password);
+        const passwordHashString = passwordHash.digest('hex').toUpperCase();
+
+        if (ucenik.passwordHash !== passwordHashString) {
+            return new Promise(resolve => {
+                resolve(new ApiResponse('Greška!', -3002, 'Nije pronađen administrator'))
+            }) 
+        }
+
+        const jwtData = new JwtDataDto()
+        jwtData.role = "ucenik"
+        jwtData.id = ucenik.ucenikId;
+        jwtData.identitet = ucenik.email
+
+        const sada = new Date();
+        sada.setDate(sada.getDate() + 14)
+        const istekTimeStamp = sada.getTime() / 1000
+        jwtData.exp = istekTimeStamp
+        jwtData.ip = req.ip
+        jwtData.ua = req.headers['user-agent']
+
+        const token: string = jwt.sign(jwtData.toPlainObject(), JwtSecret);
+
+        const responseObject = new LoginInfoDto(
+            ucenik.ucenikId,
+            ucenik.passwordHash,
             token,
         )
 

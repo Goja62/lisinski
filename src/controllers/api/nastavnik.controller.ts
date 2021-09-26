@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Crud } from "@nestjsx/crud";
 import { AddNastavnikDto } from "src/dtos/nastavnik/add.nastavnik.dto";
@@ -18,6 +18,8 @@ import * as fs from "fs";
 import { Funkcije } from "src/misc/funkcije";
 import * as sharp from "sharp";
 import { EditNastavnikDto } from "src/dtos/nastavnik/edit.nastavnik.dto";
+import { RoleCheckerGuard } from "src/misc/role.checker.guard";
+import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
 
 //http://localhost:3000/api/nastavnik
 @Controller('api/nastavnik')
@@ -54,11 +56,15 @@ export class NastavnikController {
     
     //http://localhost:3000/api/nastavnik/napraviNastavnika
     @Post('napraviNastavnika')
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator')
     async PravljenjeKompletnogNastavnika(@Body() data: AddNastavnikDto): Promise<Nastavnik | ApiResponse> {
         return await this.service.PravljenjeKompletnogNastavnika(data)
     }
 
     @Patch(':nastavnikId')
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator')
     async editovanjeKompletnogNastavnika(@Param('nastavnikId') id: number, @Body() data: EditNastavnikDto): Promise<Nastavnik | ApiResponse> {
         
         return await this.service.editovanjeKompletnogNastavnika(id, data)
@@ -66,12 +72,16 @@ export class NastavnikController {
 
     //http://localhost:3000/api/nastavnik/:id
     @Get('/:id')
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('nastavnik', 'administrator')
     async getNastavnikById(@Param('id') nastavnikId: number): Promise<Nastavnik | ApiResponse> {
         return await this.service.getById(nastavnikId);
     }
 
      // http://localhost:3000/api/nastavnik/:id/uploadSlike/
     @Post(':id/uploadSlike')
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator')
     @UseInterceptors(
         FileInterceptor('slika', {
             storage: diskStorage({
@@ -166,6 +176,8 @@ export class NastavnikController {
 
     // http://localhost:3000/api/nastavnik/:nastavnikId/brisanjeSlike/:slikaId/
    @Delete(':nastavnikId/brisanjeSlike/:slikaId')
+   @UseGuards(RoleCheckerGuard)
+   @AllowToRoles('administrator')
    public async brisanjeSlike(@Param('nastavnikId') nastavnikId: number, @Param('slikaId') slikaId: number): Promise<Slika | ApiResponse> {
         const slika = await this.slikaService.findOne({
             nastavnikId: nastavnikId,

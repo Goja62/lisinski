@@ -46,7 +46,7 @@ export class AuthMiddleware implements NestMiddleware {
         
         
         switch (jwtData.role) {
-            case "nastavnik":
+            case "administrator":
                 const administrator = await this.administratorService.getById(jwtData.id)
                 if (!administrator) {
                     throw new HttpException('Administrator nije pronađen', HttpStatus.UNAUTHORIZED);
@@ -65,6 +65,8 @@ export class AuthMiddleware implements NestMiddleware {
         if (trenutniTimestamp >= jwtData.exp) {
             throw new HttpException('Validnost tokena je istekla', HttpStatus.UNAUTHORIZED);
         }
+
+        req.token = jwtData;
 
         next();
     }
