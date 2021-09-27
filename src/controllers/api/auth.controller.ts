@@ -86,7 +86,7 @@ export class AuthController {
 
         if (nastavnik.passwordHash !== passwordHashString) {
             return new Promise(resolve => {
-                resolve(new ApiResponse('Greška!', -3002, 'Nije pronađen administrator'))
+                resolve(new ApiResponse('Greška!', -3002, 'Nije pronađen nastavnik'))
             }) 
         }
 
@@ -120,7 +120,7 @@ export class AuthController {
 
         if(!ucenik) {
             return new Promise(resolve => {
-                resolve(new ApiResponse('Greška!', -3001, 'Nije pronađen nastavnik'))
+                resolve(new ApiResponse('Greška!', -3001, 'Nije pronađen učenik'))
             }) 
         }
 
@@ -130,7 +130,7 @@ export class AuthController {
 
         if (ucenik.passwordHash !== passwordHashString) {
             return new Promise(resolve => {
-                resolve(new ApiResponse('Greška!', -3002, 'Nije pronađen administrator'))
+                resolve(new ApiResponse('Greška!', -3002, 'Nije pronađen učenik'))
             }) 
         }
 

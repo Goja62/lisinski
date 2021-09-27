@@ -50,7 +50,7 @@ export class UcenikController {
     //http://localhost:3000/api/ucenik/sviUcenici
     @Get('jedanUcenik/:id')
     @UseGuards(RoleCheckerGuard)
-    @AllowToRoles('nastavnik', 'administrator')
+    @AllowToRoles('nastavnik', 'administrator', 'ucenik')
     async prikazJednogUcenika(@Param('id') ucenikId: number) {
         return await this.service.getById(ucenikId)
     }

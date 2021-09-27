@@ -2,6 +2,8 @@
 export const SkladisteConfig = {
     slika: {
         destinacija: '../skladiste/slike/',
+        urlPrefix: '/assets/slike/',
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         slikaMaksimalnaVelicina: 1024 * 1024 * 100,
         promenaVelicine: {
             thumb: {

@@ -28,16 +28,16 @@ export class NastavnikService extends TypeOrmCrudService<Nastavnik> {
         return await this.nastavnik.findOne(nastavnikId)
 }
 
-async getByEmail(email: string): Promise<Nastavnik | null> {
-    const nastavnik = await this.nastavnik.findOne({
-        email: email
-    })
+    async getByEmail(email: string): Promise<Nastavnik | null> {
+        const nastavnik = await this.nastavnik.findOne({
+            email: email
+        })
 
-    if (nastavnik) {
-        return nastavnik
-    }
+        if (nastavnik) {
+            return nastavnik
+        }
 
-    return null
+        return null
 }
 
     async PravljenjeKompletnogNastavnika(data: AddNastavnikDto): Promise<Nastavnik | ApiResponse> {

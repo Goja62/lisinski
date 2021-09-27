@@ -7,12 +7,14 @@ import * as jwt from 'jsonwebtoken'
 import { JwtDataDto } from "src/dtos/auth/jwt.data.dto";
 import { JwtSecret } from "config/jwt.secret";
 import { NastavnikService } from "src/services/nastavnik/nastavnik.service";
+import { UcenikService } from "src/services/ucenik/ucenik.service";
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
     constructor(
         private readonly administratorService: AdministratorService,
         private readonly nastavnikService: NastavnikService,
+        private readonly ucenikService: UcenikService,
     ) { }
 
     
@@ -57,6 +59,13 @@ export class AuthMiddleware implements NestMiddleware {
                 const nastavnik = await this.nastavnikService.getById(jwtData.id)
                 if (!nastavnik) {
                     throw new HttpException('Nastavnik nije pronađen', HttpStatus.UNAUTHORIZED);
+                }
+                break;
+            
+            case "ucenik":
+                const ucenik = await this.ucenikService.getById(jwtData.id)
+                if (!ucenik) {
+                    throw new HttpException('Ucenik nije pronađen', HttpStatus.UNAUTHORIZED);
                 }
                 break;
         }
