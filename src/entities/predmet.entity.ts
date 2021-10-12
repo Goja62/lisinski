@@ -18,7 +18,7 @@ export class Predmet {
   @PrimaryGeneratedColumn({ type: "int", name: "predmet_id", unsigned: true })
   predmetId: number;
 
-  @Column("varchar", { name: "naziv", length: 128, default: () => "'0'" })
+  @Column("varchar", { length: 128, default: () => "'0'" })
   naziv: string;
 
   @Column("int", { name: "nastavnik_id", unsigned: true, default: () => "'0'" })

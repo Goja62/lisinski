@@ -20,6 +20,7 @@ import * as sharp from "sharp";
 import { EditNastavnikDto } from "src/dtos/nastavnik/edit.nastavnik.dto";
 import { RoleCheckerGuard } from "src/misc/role.checker.guard";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
+import { SearchNastavnikDto } from "src/dtos/nastavnik/search.nastavnika.dto";
 
 //http://localhost:3000/api/nastavnik
 @Controller('api/nastavnik')
@@ -76,6 +77,14 @@ export class NastavnikController {
     @AllowToRoles('nastavnik', 'administrator')
     async getNastavnikById(@Param('id') nastavnikId: number): Promise<Nastavnik | ApiResponse> {
         return await this.service.getById(nastavnikId);
+    }
+
+    //http://localhost:3000/api/nastavnik/pretragaNastavnika
+    @Post('pretragaNastavnika')
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator', 'nastavnik')
+    async pretragaNastavnika(@Body() data:SearchNastavnikDto): Promise<Nastavnik[] |ApiResponse>  {
+        return await this.service.pretragaNastavnik(data)
     }
 
      // http://localhost:3000/api/nastavnik/:id/uploadSlike/

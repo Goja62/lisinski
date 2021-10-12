@@ -7,6 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { NastavnikToken } from "./nastavnik.token.entity";
 import { Odsek } from "./odsek.entity";
 import { Predmet } from "./predmet.entity";
 import { Slika } from "./slika.entety";
@@ -77,4 +78,9 @@ export class Nastavnik {
     () => Slika, (slika) => slika.nastavnik
     )
   slike: Slika[];
+
+  @OneToMany(
+    () => NastavnikToken, (nastavnikToken) => nastavnikToken.nastavnik
+    )
+  nastavnikTokeni: NastavnikToken[];
 }

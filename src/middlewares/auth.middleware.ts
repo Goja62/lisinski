@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from "express";
 import { AdministratorService } from "src/services/administrator/administrator.service";
 import * as jwt from 'jsonwebtoken'
 import { JwtDataDto } from "src/dtos/auth/jwt.data.dto";
-import { JwtSecret } from "config/jwt.secret";
+import { jwtSecret } from "config/jwt.secret";
 import { NastavnikService } from "src/services/nastavnik/nastavnik.service";
 import { UcenikService } from "src/services/ucenik/ucenik.service";
 
@@ -32,7 +32,13 @@ export class AuthMiddleware implements NestMiddleware {
 
         const tokenString = deloviTokena[1];
 
-        const jwtData: JwtDataDto = jwt.verify(tokenString, JwtSecret)
+        let jwtData: JwtDataDto;
+        
+        try {
+            jwtData = jwt.verify(tokenString, jwtSecret);
+        } catch (e) {
+            throw new HttpException('Bad token found', HttpStatus.UNAUTHORIZED);
+        }
         
         if (!jwtData) {
             throw new HttpException('Pronađen je neispravan token', HttpStatus.UNAUTHORIZED);

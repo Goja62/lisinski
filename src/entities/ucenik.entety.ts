@@ -51,10 +51,8 @@ export class Ucenik {
     )
   predmeti: Predmet[];
 
-  @ManyToOne(() => NivoSkolovanja, (nivoSkolovanja) => nivoSkolovanja.ucenici, {
-    onDelete: "RESTRICT",
-    onUpdate: "CASCADE",
-  })
+  @ManyToOne(() => NivoSkolovanja, (nivoSkolovanja) => nivoSkolovanja.ucenici, { onDelete: "RESTRICT", onUpdate: "CASCADE", }
+  )
   @JoinColumn([
     { name: "nivo_skolovanja_id", referencedColumnName: "nivoSkolovanjaId" },
   ])

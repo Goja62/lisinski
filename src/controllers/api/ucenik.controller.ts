@@ -26,6 +26,12 @@ import { UcenikService } from "src/services/ucenik/ucenik.service";
                 eager: true
             }
         }
+    },
+    routes: {
+        only: [
+            "getOneBase",
+            "getManyBase"
+        ]
     }
 })
 

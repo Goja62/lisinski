@@ -1,8 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards } from "@nestjs/common";
 import { Crud } from "@nestjsx/crud";
+import { AddPredtmetDto } from "src/dtos/predmet/add.predmet.dto";
+import { SearchPredmetDto } from "src/dtos/predmet/search.predmet.dto";
 import { Predmet } from "src/entities/predmet.entity";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
+import { ApiResponse } from "src/misc/api.response";
 import { RoleCheckerGuard } from "src/misc/role.checker.guard";
 import { PredmetService } from "src/services/predmet/predmet.service";
 
@@ -22,6 +25,9 @@ import { PredmetService } from "src/services/predmet/predmet.service";
     query: {
         join: {
             nastavnik: {
+                eager: true
+            }, 
+            ucenik: {
                 eager: true
             }
         }
@@ -68,4 +74,19 @@ import { PredmetService } from "src/services/predmet/predmet.service";
 })
 export class PredmetController {
     constructor(public service: PredmetService) {}
+
+    //http://localhost:3000/api/predmet/kreirajPredmet
+    @Post('kreirajPredmet')
+    async kreirajPredmet(@Body() data: AddPredtmetDto) {
+        return await this.service.kreirajPredmet(data)
+    }
+
+    //http://localhost:3000/api/predmet/pregledPredmeta
+    @Post('pregledPredmeta')
+    @UseGuards(RoleCheckerGuard)
+    @AllowToRoles('administrator', 'nastavnik')
+    async pregledPredmeta(@Body() data: SearchPredmetDto): Promise<Predmet[] | ApiResponse> {
+        return await this.service.pregledPredmeta(data)
+    }
+
 }

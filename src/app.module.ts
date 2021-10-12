@@ -24,6 +24,7 @@ import { PredmetService } from './services/predmet/predmet.service';
 import { UcenikService } from './services/ucenik/ucenik.service';
 import { Slika } from './entities/slika.entety';
 import { SlikaService } from './services/slika/slika.service';
+import { NastavnikToken } from './entities/nastavnik.token.entity';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { SlikaService } from './services/slika/slika.service';
         Predmet,
         NivoSkolovanja,
         Ucenik,
-        Slika
+        Slika,
+        NastavnikToken
       ]
     }),
     TypeOrmModule.forFeature([
@@ -52,6 +54,7 @@ import { SlikaService } from './services/slika/slika.service';
       NivoSkolovanja,
       Ucenik,
       Slika,
+      NastavnikToken,
     ])
   ],
   controllers: [
